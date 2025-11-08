@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 
 function Counter() {
 
-    const [count, setCount] = useState()
+    const [studentCount, setstudentCount] = useState()
+    const [clientCount, setClientCount] = useState()
+    const [experienceCount, setExperienceCount] = useState()
 
     useEffect(()=>{
         let startValue = 0
         let endValue = 1000
-        let delay = 1
+        let studentDelay = 1
 
         const studentCounter = setInterval(()=>{
             startValue += 5
@@ -16,26 +18,61 @@ function Counter() {
                 clearInterval(studentCounter)
 
             }
-            setCount(startValue)
-        }, delay)
+            setstudentCount(startValue)
+        }, studentDelay)
 
         return ()=> clearInterval(studentCounter)
 
     },[])
 
+
+    useEffect(()=>{
+        let startClient = 0
+        let endClient = 150
+        let clientDelay = 1
+
+        const clientCounter = setInterval(()=>{
+            startClient += 1
+            if(startClient >= endClient){
+                clearInterval(clientCounter)
+            }
+            setClientCount(startClient)
+            
+        }, clientDelay)
+
+        return ()=> clearInterval(clientCounter)
+    }, [])
+
+
+    useEffect(()=>{
+        let startExp = 0
+        let endExp = 35
+        let delayExp = 100
+
+        const expCounter = setInterval(()=>{
+            startExp += 1
+            if(startExp >= endExp){
+                clearInterval(expCounter)
+                startExp = endExp
+            }
+            setExperienceCount(startExp)
+        , delayExp})
+        return ()=> clearInterval(expCounter)
+    }, [])
+
   return (
     <>
     <div className='grid grid-cols-1 md:grid-cols-3 px-30 gap-30 bg-gray-200 py-10'>
         <div className='text-center text-white rounded-xl p-5 bg-blue-500 hover:scale-110 hover:shadow-2xl hover:shadow-gray-600 transition'>
-            <h1 className='font-bold text-3xl'>{count}<span className='font-bold text-3xl'>+</span></h1>
+            <h1 className='font-bold text-3xl'>{studentCount}<span className='font-bold text-3xl'>+</span></h1>
             <h3 className='mt-1 font-medium'>Students Managed Successfully</h3>
         </div>
         <div className='text-center text-white rounded-xl p-5 bg-blue-500 hover:scale-110 hover:shadow-2xl hover:shadow-gray-600 transition'>
-            <h1 className='font-bold text-3xl'>150<span className='font-bold text-3xl'>+</span></h1>
+            <h1 className='font-bold text-3xl'>{clientCount}<span className='font-bold text-3xl'>+</span></h1>
             <h3 className='mt-1 font-medium'>Satisfied Clients</h3>
         </div>
         <div className='text-center text-white rounded-xl p-5 bg-blue-500 hover:scale-110 hover:shadow-2xl hover:shadow-gray-600 transition'>
-            <h1 className='font-bold text-3xl'>20<span className='font-bold text-3xl'>+</span></h1>
+            <h1 className='font-bold text-3xl'>{experienceCount}<span className='font-bold text-3xl'>+</span></h1>
             <h3 className='mt-1 font-medium'>Year's of Experience</h3>
         </div>
     </div>
