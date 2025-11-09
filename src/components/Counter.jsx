@@ -62,7 +62,9 @@ function Counter() {
 
   return (
     <>
-    <div className='grid grid-cols-1 md:grid-cols-3 px-30 gap-30 bg-gray-200 py-10'>
+     <h1 className='text-center font-bold text-2xl pt-10 bg-gray-100'>What We’ve Achieved So Far</h1>
+    <div className='grid grid-cols-1 md:grid-cols-3 px-30 gap-30 bg-gray-100 py-10'>
+       
         <div className='text-center text-white rounded-xl p-5 bg-blue-500 hover:scale-110 hover:shadow-2xl hover:shadow-gray-600 transition'>
             <h1 className='font-bold text-3xl'>{studentCount}<span className='font-bold text-3xl'>+</span></h1>
             <h3 className='mt-1 font-medium'>Students Managed Successfully</h3>
