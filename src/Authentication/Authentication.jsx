@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 function Authentication({ authenticator }) {
     return (
         <>
-            <div className='w-full h-screen bg-blue-100 flex justify-center items-center'>
+            <div className='w-full h-screen bg-blue-100 flex justify-center items-center px-16'>
                 <div className='rounded-xl bg-white py-10 px-20 border-0 shadow-2xl shadow-blue-900'>
                     {authenticator ?
                         <div>

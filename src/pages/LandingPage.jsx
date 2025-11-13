@@ -3,6 +3,7 @@ import Footer from '../components/Footer'
 import { GiTeacher } from 'react-icons/gi'
 import Counter from '../components/Counter'
 import { useNavigate } from 'react-router-dom'
+import Header from '../components/Header'
 
 function LandingPage() {
 
@@ -10,8 +11,8 @@ function LandingPage() {
 
   return (
     <>
-
-      <div className="grid lg:grid-cols-2 sm:grid-cols-1 py-8 pt-18 bg-gray-200 w-full">
+    <Header/>
+      <div className="grid lg:grid-cols-2 sm:grid-cols-1 py-8 pt-10 bg-gray-200 w-full">
         <div id="motiondiv1" className="flex justify-center items-center">
           <div className="max-w-md text-center sm:text-left">
 
