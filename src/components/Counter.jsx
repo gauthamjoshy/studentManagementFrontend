@@ -50,21 +50,22 @@ function Counter() {
         let delayExp = 100
 
         const expCounter = setInterval(() => {
-            startExp += 1
+            startExp += 5
             if (startExp >= endExp) {
                 clearInterval(expCounter)
                 startExp = endExp
             }
             setExperienceCount(startExp)
-                , delayExp
-        })
+                
+        }, delayExp)
         return () => clearInterval(expCounter)
     }, [])
 
     return (
         <>
             <h1 id='cHeading' className='text-center font-bold text-2xl pt-10 bg-gray-100'>What We’ve Achieved So Far</h1>
-            <div className='grid grid-cols-1 md:grid-cols-3 px-28 gap-30 bg-gray-100 py-10 '>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-6 sm:px-10 md:px-20 bg-gray-100 py-10">
+
 
                 <div className='text-center text-white rounded-xl p-5 bg-blue-500 hover:scale-110 hover:shadow-2xl hover:shadow-gray-600 transition'>
                     <h1 className='font-bold text-3xl'>{studentCount}<span className='font-bold text-3xl'>+</span></h1>

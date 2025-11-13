@@ -2,7 +2,6 @@
 
 *{
   font-family: "Montserrat", sans-serif;
-  /* background: fixed; */
 }
 
 @keyframes fadeInX{
@@ -36,7 +35,7 @@
 
 #motiondiv2{
   animation-name: fadeInY;
-  animation-duration: 1.5s;
+  animation-duration: 1.75s;
   animation-timing-function: ease-out;
 
 }
