@@ -23,6 +23,12 @@ function HomePage() {
   const [searchStudent, setSearchStudent] = useState([])
   const [userInput, setUserInput] = useState("")
 
+  // for remarks
+  const [studentRemarks, setStudentRemarks] = useState("")
+  const [filteredStudents, setFilteredStudents] = useState({})
+
+  const [displayStudent, setDisplayStudent] = useState([])
+
   //add student
   const [addNewStudent, setAddNewStudent] = useState({
     image: "",
@@ -174,14 +180,49 @@ function HomePage() {
     ))
     console.log(result);
     // setViewAllStudents(result.data)
-    setSearchStudent(result)
+    setDisplayStudent(result)
     }else{
       // setViewAllStudents(viewAllStudents)
-      setSearchStudent(viewAllStudents)
+      setDisplayStudent(viewAllStudents)
     }
   }, [userInput, viewAllStudents])
   
   // 
+
+
+  // filter ehs
+  // useEffect(()=>{
+  //   setSearchStudent(viewAllStudents)
+  //   if(studentRemarks){
+  //     const result = searchStudent.filter((stud)=>(
+  //       stud.remarks.toLowerCase() == "ehs"
+  //     ))
+  //   }
+  // }, [studentRemarks, viewAllStudents])
+
+  useEffect(()=>{
+    if(studentRemarks){
+      const result = viewAllStudents.filter((stud)=>(
+        stud.remarks.toLowerCase() == studentRemarks.toLowerCase()
+      ))
+      setDisplayStudent(result)
+    }else{
+      setDisplayStudent(viewAllStudents)
+    }
+  }, [studentRemarks, viewAllStudents])
+
+  // useEffect(()=>{
+  //   if(studentRemarks){
+  //     const result = viewAllStudents.filter((stud)=>(
+  //       stud.remarks?.toLowerCase() == studentRemarks.toLowerCase()
+  //     ))
+  //     setSearchStudent(result)
+  //   }else{
+  //     setSearchStudent(viewAllStudents)
+  //   }
+  // }, [studentRemarks, viewAllStudents])
+
+
 
   useEffect(() => {
     getAllStudents()
@@ -231,7 +272,6 @@ function HomePage() {
 
                 <select className='border-none outline-none w-full focus:border' name="" id="">
                   <option aria-readonly value="">Filter students by</option>
-                  <option value="">Gender</option>
                   <option value="EHS">EHS Students</option>
                   <option value="Non-EHS">Non-EHS Students</option>
                 </select>
@@ -446,8 +486,8 @@ function HomePage() {
         <div className='md:px-10 p-5 gap-10'>
           <div className='grid md:grid-cols-2 grid-cols-1 gap-10'>
             {/* student card */}
-            {searchStudent.length > 0 ? (
-              searchStudent.map((student, index) => (
+            {displayStudent.length > 0 ? (
+              displayStudent.map((student, index) => (
                 <div key={index} className='md:mt-0 mt-2 bg-linear-to-br from-red-200 to-blue-400 rounded-lg shadow hover:shadow-lg hover:shadow-blue-700 hover:scale-102 transition'>
                   {/* outer */}
                   <div className=''>
@@ -576,7 +616,7 @@ function HomePage() {
                     {/* fourth div */}
                     <div className='flex justify-between items-center md:gap-2 gap-1 md:mt-5 mt-2 md:mx-20 '>
                       <div className='bg-white md:mt-1 flex justify-center items-center md:p-2 py-5 w-full'>
-                        <p className='font-semibold'>Remarks : <span className='font-normal'>{student?.remarks}</span></p>
+                        <p value={studentRemarks} onChange={(e)=>setStudentRemarks(e.target.value)} className='font-semibold'>Remarks : <span className='font-normal'>{student?.remarks}</span></p>
                       </div>
                       <div className='bg-white md:mt-1 flex justify-center items-center md:p-2 py-5 w-full'>
                         <p className='font-semibold'>Status : <span className='font-normal'>{student?.status}</span></p>
