@@ -12,7 +12,7 @@ function LandingPage() {
   return (
     <>
     <Header/>
-      <div className="grid lg:grid-cols-2 sm:grid-cols-1 py-8 pt-10 bg-gray-200 w-full">
+      <div className="grid lg:grid-cols-2 sm:grid-cols-1 py-8 pt-10 bg-gray-200 w-full overflow-hidden">
         <div id="motiondiv1" className="flex justify-center items-center">
           <div className="max-w-md text-center sm:text-left">
 
