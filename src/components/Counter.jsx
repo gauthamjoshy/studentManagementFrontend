@@ -67,15 +67,15 @@ function Counter() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-6 sm:px-10 md:px-30 py-20">
 
 
-                <div className='text-center text-white rounded-4xl md:py-20 p-5  bg-blue-500 hover:scale-110 hover:shadow-2xl hover:shadow-gray-600 transition'>
+                <div className='text-center text-white rounded-4xl md:py-20 p-5  bg-blue-500 hover:scale-110 hover:shadow-2xl hover:shadow-gray-600 transition hover:bg-blue-700'>
                     <h1 className='font-bold text-3xl'>{studentCount}<span className='font-bold text-3xl'>+</span></h1>
                     <h3 className='mt-1 font-medium'>Students Managed Successfully</h3>
                 </div>
-                <div className='text-center text-white rounded-4xl md:py-20 p-5 bg-blue-500 hover:scale-110 hover:shadow-2xl hover:shadow-gray-600 transition'>
+                <div className='text-center text-white rounded-4xl md:py-20 p-5 bg-blue-500 hover:scale-110 hover:shadow-2xl hover:shadow-gray-600 transition hover:bg-blue-700'>
                     <h1 className='font-bold text-3xl'>{clientCount}<span className='font-bold text-3xl'>+</span></h1>
                     <h3 className='mt-1 font-medium'>Satisfied Clients</h3>
                 </div>
-                <div className='text-center text-white rounded-4xl md:py-20 p-5 bg-blue-500 hover:scale-110 hover:shadow-2xl hover:shadow-gray-600 transition'>
+                <div className='text-center text-white rounded-4xl md:py-20 p-5 bg-blue-500 hover:scale-110 hover:shadow-2xl hover:shadow-gray-600 transition hover:bg-blue-700'>
                     <h1 className='font-bold text-3xl'>{experienceCount}<span className='font-bold text-3xl'>+</span></h1>
                     <h3 className='mt-1 font-medium'>Year's of Experience</h3>
                 </div>

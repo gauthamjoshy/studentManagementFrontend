@@ -147,78 +147,79 @@ function HomePage() {
     }
   }
 
-  // search
-  // const searchOneStudent = () => {
-  //   if (userInput) {
-      // console.log(viewAllStudents);
-      // setSearchStudent(viewAllStudents);
-      // console.log(searchStudent);
-  //     const result = viewAllStudents.filter((stud) => (
-  //       stud.name.toLowerCase().includes(userInput.toLowerCase())
-  //     ))
-  //     setSearchStudent(result)
-  //     console.log(result);
-  //   }else{
-  //     setSearchStudent(viewAllStudents)
-  //   }
+  // SEARCH
 
+  useEffect(() => {
+    if (userInput) {
+      const result = viewAllStudents.filter((stud) => (
+        stud.name.toLowerCase().includes(userInput.toLowerCase())
 
-  // }
-
-  // useEffect(() => {
-  //   searchOneStudent(userInput)
-  // }, [userInput])
-
-// SEARCH
-
-  useEffect(()=>{
-    setSearchStudent(viewAllStudents)
-    if(userInput){
-      const result = searchStudent.filter((stud)=>(
-      stud.name.toLowerCase().includes(userInput.toLowerCase())
-      
-    ))
-    console.log(result);
-    // setViewAllStudents(result.data)
-    setDisplayStudent(result)
-    }else{
+      ))
+      console.log(result);
+      // setViewAllStudents(result.data)
+      setDisplayStudent(result)
+    } else {
       // setViewAllStudents(viewAllStudents)
       setDisplayStudent(viewAllStudents)
     }
   }, [userInput, viewAllStudents])
-  
+
   // 
 
 
   // filter ehs
-  // useEffect(()=>{
-  //   setSearchStudent(viewAllStudents)
-  //   if(studentRemarks){
-  //     const result = searchStudent.filter((stud)=>(
-  //       stud.remarks.toLowerCase() == "ehs"
-  //     ))
-  //   }
-  // }, [studentRemarks, viewAllStudents])
 
-  useEffect(()=>{
-    if(studentRemarks){
-      const result = viewAllStudents.filter((stud)=>(
-        stud.remarks.toLowerCase() == studentRemarks.toLowerCase()
-      ))
-      setDisplayStudent(result)
+  // Ehs students
+  const checkPassed = () => {
+    const resultofPassFilter = viewAllStudents.filter(stud => stud.remarks === "EHS");
+    if (resultofPassFilter.length > 0) {
+      setDisplayStudent(resultofPassFilter);
+    } else {
+      setDisplayStudent(viewAllStudents);
+    }
+  };
+
+  // useEffect((resultofPassFilter)=>{
+  //   setDisplayStudent(resultofPassFilter);
+  // }, [viewAllStudents])
+
+
+
+  //   const remark = viewAllStudents.find(stud => stud.remarks === "NON-EHS");
+  // console.log(remark);
+
+  // const result = viewAllStudents.filter((stud) => (
+  //   stud.remarks == "EHS"
+  // ))
+  // console.log(result);
+
+  const checkEHS = ()=>{
+    const passedStudents = viewAllStudents.filter((stud)=>(
+      stud.remarks == "EHS"
+  
+    ))
+    console.log(passedStudents);
+    if(passedStudents){
+      setDisplayStudent(passedStudents)
     }else{
       setDisplayStudent(viewAllStudents)
     }
-  }, [studentRemarks, viewAllStudents])
+    
+  }
 
+
+
+
+
+
+
+  // sort
   // useEffect(()=>{
   //   if(studentRemarks){
-  //     const result = viewAllStudents.filter((stud)=>(
-  //       stud.remarks?.toLowerCase() == studentRemarks.toLowerCase()
-  //     ))
-  //     setSearchStudent(result)
+  //     const result = viewAllStudents.sort((a, b) => a - b)
+  //     setDisplayStudent(result)
   //   }else{
-  //     setSearchStudent(viewAllStudents)
+  //     setDisplayStudent(viewAllStudents)
   //   }
   // }, [studentRemarks, viewAllStudents])
 
@@ -266,13 +267,14 @@ function HomePage() {
               <div className='flex items-center gap-2'>
                 <FaFilter />
                 <p className='font-semibold text-gray-700'>Filter</p>
+                <button onClick={checkEHS} className='bg-black text-white'>BUTTON</button>
 
               </div>
               <div className='flex justify-between items-center rounded border-2 border-gray-500 p-1 focus-within: focus-within:shadow focus-within:border-blue-600 mt-1'>
 
                 <select className='border-none outline-none w-full focus:border' name="" id="">
                   <option aria-readonly value="">Filter students by</option>
-                  <option value="EHS">EHS Students</option>
+                  <option onClick={checkPassed} value="EHS" >EHS Students</option>
                   <option value="Non-EHS">Non-EHS Students</option>
                 </select>
               </div>
@@ -616,7 +618,7 @@ function HomePage() {
                     {/* fourth div */}
                     <div className='flex justify-between items-center md:gap-2 gap-1 md:mt-5 mt-2 md:mx-20 '>
                       <div className='bg-white md:mt-1 flex justify-center items-center md:p-2 py-5 w-full'>
-                        <p value={studentRemarks} onChange={(e)=>setStudentRemarks(e.target.value)} className='font-semibold'>Remarks : <span className='font-normal'>{student?.remarks}</span></p>
+                        <p className='font-semibold'>Remarks : <span className='font-normal'>{student?.remarks}</span></p>
                       </div>
                       <div className='bg-white md:mt-1 flex justify-center items-center md:p-2 py-5 w-full'>
                         <p className='font-semibold'>Status : <span className='font-normal'>{student?.status}</span></p>
