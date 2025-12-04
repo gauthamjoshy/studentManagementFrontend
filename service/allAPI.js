@@ -13,15 +13,21 @@ export const getStudentAPI = async (id) => {
 }
 
 // get all students
-export const getAllStudentsAPI = async()=>{
+export const getAllStudentsAPI = async () => {
     return await commonAPI("GET", `${BASEURL}/students`)
 }
 
 // edit student
-export const editStudentAPI = async (studentData, id)=>{
+export const editStudentAPI = async (studentData, id) => {
     return await commonAPI("PUT", `${BASEURL}/students/${id}`, studentData)
 }
 
-export const deleteStudentAPI = async (id)=>{
+// delete student
+export const deleteStudentAPI = async (id) => {
     return await commonAPI("DELETE", `${BASEURL}/students/${id}`)
-} 
+}
+
+// register
+export const regesterAPI = async (userData) => {
+    return await commonAPI("POST", `${BASEURL}/users`, userData)
+}

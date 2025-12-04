@@ -164,61 +164,61 @@ function HomePage() {
     }
   }, [userInput, viewAllStudents])
 
-  // 
 
-
-  // filter ehs
-
-  // Ehs students
-  const checkPassed = () => {
-    const resultofPassFilter = viewAllStudents.filter(stud => stud.remarks === "EHS");
-    if (resultofPassFilter.length > 0) {
-      setDisplayStudent(resultofPassFilter);
+  // filter
+  const checkEHS = (event) => {
+    if (event == "EHS") {
+      const result = viewAllStudents.filter((stud) => (
+        stud.remarks == "EHS"
+      ))
+      setDisplayStudent(result)
+    } else if (event == "NON-EHS") {
+      const result = viewAllStudents.filter((stud) => (
+        stud.remarks == "NON-EHS"
+      ))
+      setDisplayStudent(result)
     } else {
-      setDisplayStudent(viewAllStudents);
-    }
-  };
-
-  // useEffect((resultofPassFilter)=>{
-  //   setDisplayStudent(resultofPassFilter);
-  // }, [viewAllStudents])
-
-
-
-  //   const remark = viewAllStudents.find(stud => stud.remarks === "NON-EHS");
-  // console.log(remark);
-
-  // const result = viewAllStudents.filter((stud) => (
-  //   stud.remarks == "EHS"
-  // ))
-  // console.log(result);
-
-  const checkEHS = ()=>{
-    const passedStudents = viewAllStudents.filter((stud)=>(
-      stud.remarks == "EHS"
-  
-    ))
-    console.log(passedStudents);
-    if(passedStudents){
-      setDisplayStudent(passedStudents)
-    }else{
       setDisplayStudent(viewAllStudents)
     }
-    
+
+
+  }
+
+  // sort
+  const handleSort = (event) => {
+    if (event == 'A → Z') {
+      const result1 = [...viewAllStudents].sort((stud1, stud2) => (stud1.name.localeCompare(stud2.name)))
+      console.log(result1);
+      setDisplayStudent(result1)
+
+    } else if (event == 'Z → A') {
+      const result = [...viewAllStudents].sort((stud1, stud2) => (stud2.name.localeCompare(stud1.name)))
+      console.log(result);
+      setDisplayStudent(result)
+
+    } else if (event == 'High → Low') {
+      const result = [...viewAllStudents].sort((stud1, stud2) => (stud2.gpa - stud1.gpa))
+      console.log(result);
+      setDisplayStudent(result)
+
+    } else {
+      const result = [...viewAllStudents].sort((stud1, stud2) => (stud1.gpa - stud2.gpa))
+      console.log(result);
+      setDisplayStudent(result)
+
+    }
   }
 
 
 
 
 
-
-
   // sort
-  // useEffect(()=>{
-  //   if(studentRemarks){
-  //     const result = viewAllStudents.sort((a, b) => a - b)
+  // useEffect(() => {
+  //   if (studentRemarks) {
+  //     const result = viewAllStudents.sort((stud1, stud1) => stud1 - stud1)
   //     setDisplayStudent(result)
-  //   }else{
+  //   } else {
   //     setDisplayStudent(viewAllStudents)
   //   }
   // }, [studentRemarks, viewAllStudents])
@@ -247,8 +247,8 @@ function HomePage() {
 
         {/* Search and filter navbar */}
         <div className='md:px-10 p-5 '>
-          <div className='grid md:grid-cols-4 grid-cols-1 md:gap-10 px-4 py-5 rounded shadow-lg'>
-            <div className=' p-4 shadow rounded bg-gray-20 hover:scale-102 hover:shadow-blue-500 hover:shadow-lg transition'>
+          <div className=' grid md:grid-cols-4 grid-cols-1 md:gap-10 p-8 rounded shadow-lg shadow-blue-500'>
+            <div className=' p-4 rounded bg-gray-20 hover:scale-101 shadow-blue-500 shadow-lg transition'>
               <div className='flex items-center gap-2'>
                 <FaSearch />
                 <p className='font-semibold text-gray-700'>Search Students</p>
@@ -263,39 +263,36 @@ function HomePage() {
               {/* </div> */}
 
             </div>
-            <div className=' p-4 shadow rounded bg-gray-20 hover:scale-102 hover:shadow-blue-500 hover:shadow-lg transition'>
-              <div className='flex items-center gap-2'>
-                <FaFilter />
-                <p className='font-semibold text-gray-700'>Filter</p>
-                <button onClick={checkEHS} className='bg-black text-white'>BUTTON</button>
+            <div className=' p-4 rounded bg-gray-20 hover:scale-101 shadow-blue-500 shadow-lg transition'>              <div className='flex items-center gap-2'>
+              <FaFilter />
+              <p className='font-semibold text-gray-700'>Filter</p>
 
-              </div>
+            </div>
               <div className='flex justify-between items-center rounded border-2 border-gray-500 p-1 focus-within: focus-within:shadow focus-within:border-blue-600 mt-1'>
 
-                <select className='border-none outline-none w-full focus:border' name="" id="">
+                <select onChange={(e) => checkEHS(e.target.value)} className='border-none outline-none w-full focus:border' name="" id="">
                   <option aria-readonly value="">Filter students by</option>
-                  <option onClick={checkPassed} value="EHS" >EHS Students</option>
-                  <option value="Non-EHS">Non-EHS Students</option>
+                  <option value="EHS" >EHS Students</option>
+                  <option value="NON-EHS">Non-EHS Students</option>
                 </select>
               </div>
 
             </div>
-            <div className=' p-4 shadow rounded bg-gray-20 hover:scale-102 hover:shadow-blue-500 hover:shadow-lg transition'>
-              <div className='flex items-center gap-2'>
-                <FaSort />
-                <p className='font-semibold text-gray-700'>Sort</p>
+            <div className=' p-4 rounded bg-gray-20 hover:scale-101 shadow-blue-500 shadow-lg transition'>              <div className='flex items-center gap-2'>
+              <FaSort />
+              <p className='font-semibold text-gray-700'>Sort</p>
 
-              </div>
+            </div>
               <div className='flex justify-between items-center rounded border-2 border-gray-500 p-1 focus-within: focus-within:shadow focus-within:border-blue-600 mt-1'>
 
-                <select className='border-none outline-none w-full focus:border' name="" id="">
+                <select onChange={(e) => handleSort(e.target.value)} className='border-none outline-none w-full focus:border' name="" id="">
                   <option aria-readonly value="">Sort students by</option>
-                  <option value="">Name : A → Z</option>
-                  <option value="">Name : Z → A</option>
-                  <option value="">CGPA : High → Low</option>
-                  <option value="">CGPA : Low → High</option>
-                  <option value="">Attendace Percentage : High → Low</option>
-                  <option value="">Attendace Percentage : Low → High</option>
+                  <option value="A → Z">Name : A → Z</option>
+                  <option value="Z → A">Name : Z → A</option>
+                  <option value="High → Low">CGPA : High → Low</option>
+                  <option value="Low → High">CGPA : Low → High</option>
+                  {/* <option value="High → Low">Attendace Percentage : High → Low</option>
+                  <option value="Low → High">Attendace Percentage : Low → High</option> */}
                 </select>
               </div>
 

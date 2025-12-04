@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FaRegUser, FaUser } from 'react-icons/fa'
 import { GrUserNew } from 'react-icons/gr'
 import { MdEmail } from 'react-icons/md'
@@ -6,6 +6,28 @@ import { RiLockPasswordFill } from 'react-icons/ri'
 import { Link } from 'react-router-dom'
 
 function Authentication({ authenticator }) {
+    const [registerDetails, setRegisterDetails] = useState({
+        username: "",
+        email: "",
+        password: ""
+    })
+
+    const [loginDetails, setLoginDetails] = useState({
+        email: "",
+        password: ""
+    })
+    console.log(registerDetails);
+    
+
+    const handleRegister = ()=>{
+
+        if(!registerDetails.email || !registerDetails.password){
+            alert(`Please fill the details completely`)
+        }else{
+            localStorage.setItem("logindetail", JSON.stringify("logindetail"))
+        }
+    }
+
     return (
         <>
             <div className='w-full h-screen bg-blue-100 flex justify-center items-center px-16'>
@@ -39,7 +61,7 @@ function Authentication({ authenticator }) {
                             <label htmlFor="">Username</label>
                             <div className='border-3 border-gray-400 flex justify-center items-center p-3 rounded-lg mt-3 focus-within:border-3 focus-within:border-blue-600 transition'>
                                 <FaUser className='me-3' />
-                                <input type="text" placeholder='Enter the Username' className='border-none outline-none placeholder-gray-500 font-medium' />
+                                <input value={registerDetails.username} onChange={(e) => setRegisterDetails({ ...registerDetails, username: e.target.value })} type="text" placeholder='Enter the Username' className='border-none outline-none placeholder-gray-500 font-medium' />
                             </div>
                         </div>
                     }
@@ -48,7 +70,11 @@ function Authentication({ authenticator }) {
                         <label htmlFor="">Email</label>
                         <div className='border-3 border-gray-400 flex justify-center items-center p-3 rounded-lg mt-3 focus-within:border-3 focus-within:border-blue-600 transition'>
                             <MdEmail className='me-3' />
-                            <input type="email" placeholder='Enter your Email' className='border-none outline-none placeholder-gray-500 font-medium' />
+                            {authenticator ?
+                                <input value={loginDetails.email} onChange={(e) => setLoginDetails({ ...loginDetails, email: e.target.value })} type="email" placeholder='Enter your Email' className='border-none outline-none placeholder-gray-500 font-medium' />
+                                :
+                                <input value={registerDetails.email} onChange={(e) => setRegisterDetails({ ...registerDetails, email: e.target.value })} type="email" placeholder='Enter your Email' className='border-none outline-none placeholder-gray-500 font-medium' />
+                            }
                         </div>
                     </div>
 
@@ -56,7 +82,11 @@ function Authentication({ authenticator }) {
                         <label htmlFor="">Password</label>
                         <div className='border-3 border-gray-400 flex justify-center items-center p-3 rounded-lg mt-3 focus-within:border-3 focus-within:border-blue-500'>
                             <RiLockPasswordFill className='me-3' />
-                            <input type="password" placeholder='Enter your Password' className='border-none outline-none placeholder-gray-500 font-medium' />
+                            {authenticator ?
+                                <input value={loginDetails.password} onChange={(e) => setLoginDetails({ ...loginDetails, password: e.target.value })} type="password" placeholder='Enter your Password' className='border-none outline-none placeholder-gray-500 font-medium' />
+                                :
+                                <input value={registerDetails.password} onChange={(e) => setRegisterDetails({ ...registerDetails, password: e.target.value })} type="password" placeholder='Enter your Password' className='border-none outline-none placeholder-gray-500 font-medium' />
+                            }
                         </div>
 
                     </div>
@@ -72,11 +102,13 @@ function Authentication({ authenticator }) {
                         </div>
                     }
 
-                    {authenticator &&
-                        <div className=''>
+                    <div className=''>
+                        {authenticator ?
                             <p>Alread have an account? <Link to={"/register"} className='text-blue-600 hover:text-blue-900 cursor-pointer font-medium'>Sign Up</Link></p>
-                        </div>
-                    }
+                            :
+                            <p className='text-center'>Back to <Link to={"/login"} className='text-blue-600 hover:text-blue-900 cursor-pointer font-medium'>Login</Link></p>
+                        }
+                    </div>
 
                 </div>
 
