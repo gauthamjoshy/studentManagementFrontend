@@ -16,17 +16,47 @@ function Authentication({ authenticator }) {
         email: "",
         password: ""
     })
-    console.log(registerDetails);
-    
 
-    const handleRegister = ()=>{
-
-        if(!registerDetails.email || !registerDetails.password){
+    const handleRegister = () => {
+        if (!registerDetails.email || !registerDetails.password) {
             alert(`Please fill the details completely`)
-        }else{
-            localStorage.setItem("logindetail", JSON.stringify("logindetail"))
+        } else {
+            const existingUsers = JSON.parse(localStorage.getItem("users")) || []
+            if (existingUsers.find((item) => (item.email == registerDetails.email))) {
+                alert(`User already exist, plesase login`)
+            } else {
+                const newUsers = [...existingUsers, registerDetails]
+                localStorage.setItem("users", JSON.stringify(newUsers))
+                alert(`User registered successfully`)
+            }
+
+
         }
     }
+
+
+    // const handleRegister = () => {
+    //     if (!registerDetails.email || !registerDetails.password) {
+    //         alert(`Please fill the details completely`)
+    //     } else {
+    //         const existingUsers = JSON.parse(localStorage.getItem("registerDetails")) || []
+    //         console.log(existingUsers);
+
+    //         if (existingUsers) {
+    //             alert(`User already registered, please login!`)
+    //         } else {
+    //             localStorage.setItem("registerDetails", JSON.stringify(registerDetails))
+    //             alert(`User registered successfully`)
+    //         }
+    //     }
+    // }
+
+
+
+    // const handleLogin = ()=>{
+    //     const existingUsers = JSON.parse(localStorage.getItem("registerDetails"))
+    //     console.log(existingUsers);
+    // }
 
     return (
         <>
@@ -93,12 +123,12 @@ function Authentication({ authenticator }) {
 
                     {authenticator ?
                         <div className='flex justify-center items-center w-full my-4'>
-                            <button className='bg-blue-600 hover:bg-blue-900 p-2 font-semibold w-full rounded-lg text-white cursor-pointer'>Login</button>
+                            <button type='button' onClick={handleLogin} className='bg-blue-600 hover:bg-blue-900 p-2 font-semibold w-full rounded-lg text-white cursor-pointer'>Login</button>
                         </div>
                         :
 
                         <div className='flex justify-center items-center w-full my-4'>
-                            <button className='bg-blue-600 hover:bg-blue-900 p-2 font-semibold w-full rounded-lg text-white cursor-pointer'>SignUp</button>
+                            <button type='button' onClick={handleRegister} className='bg-blue-600 hover:bg-blue-900 p-2 font-semibold w-full rounded-lg text-white cursor-pointer'>SignUp</button>
                         </div>
                     }
 
