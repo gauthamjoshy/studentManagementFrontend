@@ -6,6 +6,7 @@ import { PiStudentBold } from 'react-icons/pi'
 import { MdPersonAddAlt1 } from 'react-icons/md'
 import { CiImageOn } from 'react-icons/ci'
 import { addStudentAPI, deleteStudentAPI, editStudentAPI, getAllStudentsAPI } from '../../service/allAPI'
+import Swal from 'sweetalert2'
 
 function HomePage() {
   const [logoutVisibility, setLogoutVisibility] = useState(true)
@@ -20,14 +21,15 @@ function HomePage() {
   const [viewAllStudents, setViewAllStudents] = useState([])
 
   // for searching
-  const [searchStudent, setSearchStudent] = useState([])
+  // const [searchStudent, setSearchStudent] = useState([])
   const [userInput, setUserInput] = useState("")
 
   // for remarks
-  const [studentRemarks, setStudentRemarks] = useState("")
-  const [filteredStudents, setFilteredStudents] = useState({})
+  // const [studentRemarks, setStudentRemarks] = useState("")
+  // const [filteredStudents, setFilteredStudents] = useState({})
 
   const [displayStudent, setDisplayStudent] = useState([])
+
 
   //add student
   const [addNewStudent, setAddNewStudent] = useState({
@@ -60,7 +62,10 @@ function HomePage() {
     const validTypes = ['image/png', 'image/jpg', 'image/jpeg']
     if (file) {
       if (!validTypes.includes(file.type)) {
-        alert(`Please Select an image of file type png/jpg/jpeg ...! `)
+        Swal.fire({
+          title: "Please Select an image of file type png/jpg/jpeg ...!",
+          icon: "warning"
+        });
       } else {
         const reader = new FileReader()
         reader.onloadend = () => {
@@ -77,19 +82,51 @@ function HomePage() {
   //  handle add student
   const handleSubmit = async () => {
     if (!addNewStudent.name || !addNewStudent.class || !addNewStudent.dob || !addNewStudent.gender) {
-      alert(`Please Fill The Required Fields`)
+      Swal.fire({
+        title: "Please Fill The Required Fields",
+        icon: "warning"
+      });
     } else {
       try {
         const result = await addStudentAPI(addNewStudent)
         if (result.status >= 200 && result.status < 300) {
-          alert(`Student added successfully`)
+          Swal.fire({
+            title: "Student added successfully",
+            icon: "success"
+          });
+          setAddNewStudent({
+            image: "",
+    name: "",
+    dob: "",
+    gender: "",
+    attendance: "",
+    class: "",
+    gpa: "",
+    remarks: "",
+    status: "",
+    marks: {
+      english: "",
+      physics: "",
+      maths: "",
+      hindi: "",
+      gk: "",
+      chemistry: "",
+      biology: "",
+      ss: ""
+          }})
           getAllStudents()
           setAddStudent(false)
         } else {
-          alert(`Adding student failed`)
+          Swal.fire({
+            title: "Adding student failed",
+            icon: "error"
+          });
         }
       } catch (error) {
-        alert(`Adding student failed`)
+        Swal.fire({
+          title: "Adding student failed",
+          icon: "error"
+        });
       }
     }
   }
@@ -103,7 +140,10 @@ function HomePage() {
       setViewAllStudents(result.data)
 
     } catch (error) {
-      alert(`Error fetching student data`)
+      Swal.fire({
+        title: "Error fetching student data",
+        icon: "error"
+      });
     }
   }
 
@@ -128,24 +168,67 @@ function HomePage() {
       const result = await editStudentAPI(currentEditStudent, currentEditStudent.id)
       setCurrentEditStudent(result.data)
       getAllStudents()
+      Swal.fire({
+        title: "Student updated successfully",
+        icon: "success"
+      });
+
+
       setEditStudent(false)
     } catch (error) {
-      alert(`Error saving data`)
+      Swal.fire({
+        title: "Error saving data",
+        icon: "error"
+      });
     }
   }
 
 
   // delete student
+  // const deleteStudent = async (id) => {
+  //   try {
+  //     const result = await deleteStudentAPI(id)
+  //     alert(`Student deleted successfully`)
+
+  //     console.log(result);
+  //     getAllStudents()
+
+  //   } catch (error) {
+  //     alert(`Error deleting student`)
+  //   }
+  // }
   const deleteStudent = async (id) => {
     try {
-      const result = await deleteStudentAPI(id)
-      console.log(result);
-      getAllStudents()
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Delete"
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+
+          const response = await deleteStudentAPI(id);
+
+          Swal.fire({
+            title: "Deleted!",
+            text: "The student has been removed.",
+            icon: "success"
+          });
+
+          console.log(response);
+          getAllStudents();
+        }
+      });
 
     } catch (error) {
-      alert(`Error deleting student`)
+      alert("Error deleting student");
     }
-  }
+  };
+
+
 
   // SEARCH
 
@@ -211,8 +294,6 @@ function HomePage() {
 
 
 
-
-
   // sort
   // useEffect(() => {
   //   if (studentRemarks) {
@@ -230,6 +311,12 @@ function HomePage() {
   }, [])
 
 
+  // const [loggedInUser, setLoggedInUser] = useState()
+  // useEffect(()=>{
+  //   const user = JSON.parse(localStorage.getItem("currentUser"))
+  //   setLoggedInUser(user)
+  // },[])
+
 
   return (
     <>
@@ -241,7 +328,7 @@ function HomePage() {
             <h1 className='font-bold md:text-3xl'>StudentManagement Dashboard</h1>
             <h2 className='md:text-lg'>Manage Your Students Effectively</h2>
           </div>
-          <h1 className='md:text-4xl font-extrabold'>Welcome <span>Alice</span>...!</h1>
+          <h1 className='md:text-4xl font-extrabold'>Welcome</h1>
 
         </div>
 
@@ -730,44 +817,44 @@ function HomePage() {
                       <div className='my-2 flex gap-10'>
                         <div >
                           <label htmlFor="" className='text-lg font-medium' >English</label>
-                          <input value={currentEditStudent.marks.english} onChange={(e) => setCurrentEditStudent({ ...currentEditStudent, marks: { ...marks, english: e.target.value } })} type="number" className='mt-2 bg-gray-100 rounded-lg p-1 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ' />
+                          <input value={currentEditStudent.marks.english} onChange={(e) => setCurrentEditStudent({ ...currentEditStudent, marks:{...currentEditStudent.marks, english:e.target.value} })} type="number" className='mt-2 bg-gray-100 rounded-lg p-1 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ' />
                         </div>
                         <div >
                           <label htmlFor="" className='text-lg font-medium' >Physics</label>
-                          <input type="number" className='mt-2 bg-gray-100 rounded-lg p-1 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ' />
+                          <input value={currentEditStudent.marks.physics} onChange={(e) => setCurrentEditStudent({ ...currentEditStudent, marks: { ...currentEditStudent.marks, physics: e.target.value } })} type="number" className='mt-2 bg-gray-100 rounded-lg p-1 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ' />
                         </div>
                       </div>
 
                       <div className='my-2 flex gap-10'>
                         <div >
                           <label htmlFor="" className='text-lg font-medium' >Maths</label>
-                          <input type="number" className='mt-2 bg-gray-100 rounded-lg p-1 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ' />
+                          <input value={currentEditStudent.marks.maths} onChange={(e) => setCurrentEditStudent({ ...currentEditStudent, marks: { ...currentEditStudent.marks, maths: e.target.value } })} type="number" className='mt-2 bg-gray-100 rounded-lg p-1 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ' />
                         </div>
                         <div >
                           <label htmlFor="" className='text-lg font-medium' >Hindi</label>
-                          <input type="number" className='mt-2 bg-gray-100 rounded-lg p-1 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ' />
+                          <input value={currentEditStudent.marks.hindi} onChange={(e) => setCurrentEditStudent({ ...currentEditStudent, marks: { ...marks, hindi: e.target.value } })} type="number" className='mt-2 bg-gray-100 rounded-lg p-1 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ' />
                         </div>
                       </div>
 
                       <div className='my-2 flex gap-10'>
                         <div >
                           <label htmlFor="" className='text-lg font-medium' >General Knowledge</label>
-                          <input type="number" className='mt-2 bg-gray-100 rounded-lg p-1 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ' />
+                          <input value={currentEditStudent.marks.gk} onChange={(e) => setCurrentEditStudent({ ...currentEditStudent, marks: { ...currentEditStudent.marks, gk: e.target.value } })} type="number" className='mt-2 bg-gray-100 rounded-lg p-1 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ' />
                         </div>
                         <div >
                           <label htmlFor="" className='text-lg font-medium' >Chemistry</label>
-                          <input type="number" className='mt-2 bg-gray-100 rounded-lg p-1 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ' />
+                          <input value={currentEditStudent.marks.chemistry} onChange={(e) => setCurrentEditStudent({ ...currentEditStudent, marks: { ...currentEditStudent.marks, chemistry: e.target.value } })} type="number" className='mt-2 bg-gray-100 rounded-lg p-1 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ' />
                         </div>
                       </div>
 
                       <div className='my-2 flex gap-10'>
                         <div >
                           <label htmlFor="" className='text-lg font-medium' >Biology</label>
-                          <input type="number" className='mt-2 bg-gray-100 rounded-lg p-1 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ' />
+                          <input value={currentEditStudent.marks.biology} onChange={(e) => setCurrentEditStudent({ ...currentEditStudent, marks: { ...currentEditStudent.marks, biology: e.target.value } })} type="number" className='mt-2 bg-gray-100 rounded-lg p-1 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ' />
                         </div>
                         <div >
                           <label htmlFor="" className='text-lg font-medium' >Social Science</label>
-                          <input type="number" className='mt-2 bg-gray-100 rounded-lg p-1 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ' />
+                          <input value={currentEditStudent.marks.ss} onChange={(e) => setCurrentEditStudent({ ...currentEditStudent, marks: { ...currentEditStudent.marks, ss: e.target.value } })} type="number" className='mt-2 bg-gray-100 rounded-lg p-1 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ' />
                         </div>
                       </div>
 
@@ -775,19 +862,19 @@ function HomePage() {
 
                     <div className='my-2'>
                       <label htmlFor="" className='text-lg font-medium' >Remarks</label>
-                      <select className='mt-2 bg-gray-100 rounded-lg p-2 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full' >
+                      <select value={currentEditStudent.remarks} onChange={(e) => setCurrentEditStudent({ ...currentEditStudent, remarks: e.target.value })} className='mt-2 bg-gray-100 rounded-lg p-2 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full' >
                         <option value="">Select</option>
-                        <option value="">EHS</option>
-                        <option value="">NON-EHS</option>
+                        <option value="EHS">EHS</option>
+                        <option value="NON-EHS">NON-EHS</option>
                       </select>
                     </div>
 
                     <div className='my-2'>
                       <label htmlFor="" className='text-lg font-medium' >Status</label>
-                      <select className='mt-2 bg-gray-100 rounded-lg p-2 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full' >
+                      <select value={currentEditStudent.status} onChange={(e) => setCurrentEditStudent({ ...currentEditStudent, status: e.target.value })} className='mt-2 bg-gray-100 rounded-lg p-2 border-3 border-violet-200 focus:ring-blue-700 focus:border-blue-700 transition outline-none w-full' >
                         <option value="">Select</option>
-                        <option value="">Passed</option>
-                        <option value="">Failed</option>
+                        <option value="Passed">Passed</option>
+                        <option value="Failed">Failed</option>
                       </select>
                     </div>
 

@@ -3,7 +3,8 @@ import { FaRegUser, FaUser } from 'react-icons/fa'
 import { GrUserNew } from 'react-icons/gr'
 import { MdEmail } from 'react-icons/md'
 import { RiLockPasswordFill } from 'react-icons/ri'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 function Authentication({ authenticator }) {
     const [registerDetails, setRegisterDetails] = useState({
@@ -17,19 +18,63 @@ function Authentication({ authenticator }) {
         password: ""
     })
 
+    const navigate = useNavigate()
+
     const handleRegister = () => {
         if (!registerDetails.email || !registerDetails.password) {
-            alert(`Please fill the details completely`)
+            Swal.fire({
+                    icon: "warning",
+                    title: "Please fill the details completely!",
+                    
+                });
         } else {
             const existingUsers = JSON.parse(localStorage.getItem("users")) || []
             if (existingUsers.find((item) => (item.email == registerDetails.email))) {
-                alert(`User already exist, plesase login`)
+                Swal.fire({
+                    icon: "error",
+                    title: "User already exist, plesase login!",
+                    
+                });
             } else {
                 const newUsers = [...existingUsers, registerDetails]
                 localStorage.setItem("users", JSON.stringify(newUsers))
-                alert(`User registered successfully`)
+                Swal.fire({
+                    title: "User registered successfully!",
+                    icon: "success"
+                });
+                setRegisterDetails({
+                    username:"",
+                    email:"",
+                    password:""
+                })
             }
 
+
+        }
+    }
+
+
+    const handleLogin = () => {
+        const { email, password } = loginDetails
+
+        const existingUsers = JSON.parse(localStorage.getItem("users")) || []
+        console.log(existingUsers);
+        const result = existingUsers.find(item =>
+            item.email == email && item.password == password
+        )
+        if (!result) {
+            Swal.fire({
+                    icon: "warning",
+                    title: "Invalid Credentials!",
+                    
+                });
+        } else {
+            navigate("/home")
+            Swal.fire({
+                    title: "Login Successful!",
+                    icon: "success"
+                });
+            localStorage.setItem("currentUser", JSON.stringify(result))
 
         }
     }
@@ -52,11 +97,6 @@ function Authentication({ authenticator }) {
     // }
 
 
-
-    // const handleLogin = ()=>{
-    //     const existingUsers = JSON.parse(localStorage.getItem("registerDetails"))
-    //     console.log(existingUsers);
-    // }
 
     return (
         <>
