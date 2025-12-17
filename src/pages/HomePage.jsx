@@ -5,8 +5,9 @@ import { FaFilter, FaSearch, FaSort, FaWindowClose } from 'react-icons/fa'
 import { PiStudentBold } from 'react-icons/pi'
 import { MdPersonAddAlt1 } from 'react-icons/md'
 import { CiImageOn } from 'react-icons/ci'
-import { addStudentAPI, deleteStudentAPI, editStudentAPI, getAllStudentsAPI } from '../../service/allAPI'
+// import { addStudentAPI, deleteStudentAPI, editStudentAPI, getAllStudentsAPI } from '../../service/allAPI'
 import Swal from 'sweetalert2'
+import { addStudentAPI, deleteStudentAPI, editStudentAPI, getAllStudentsAPI } from '../service/allAPI'
 
 function HomePage() {
   const [logoutVisibility, setLogoutVisibility] = useState(true)
